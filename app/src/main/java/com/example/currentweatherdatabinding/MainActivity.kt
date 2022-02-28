@@ -18,14 +18,14 @@ import java.net.URL
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
-    //lateinit var binding: ActivityMainBinding
+    lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        //binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        //binding.weather = Weather("no", "no")
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        binding.weather = Weather("", "")
         // TODO: show images for the weather, the cloudiness and the wind direction
     }
 
@@ -45,18 +45,18 @@ class MainActivity : AppCompatActivity() {
             val stream = URL(weatherURL).getContent() as InputStream
             val rdata = Scanner(stream).nextLine()
             val data = JSONObject(rdata).toMap()
-            //binding.weather = Weather(city, getString(R.string.temp_not_avail))
+            binding.weather = Weather(city, getString(R.string.temp_not_avail))
             if (data.containsKey("main")){
                 val dataMain = JSONObject(data["main"].toString()).toMap()
                 if (dataMain.containsKey("temp")) {
-                    //binding.weather = Weather(city, dataMain["temp"].toString())
+                    binding.weather = Weather(city, dataMain["temp"].toString())
                 }
             }
         } catch (e: FileNotFoundException) {
             this@MainActivity.runOnUiThread(java.lang.Runnable {
                 Toast.makeText(this, "ERROR 404", Toast.LENGTH_SHORT).show()
             })
-            //binding.weather = Weather(city, getString(R.string.file_not_found))
+            binding.weather = Weather(city, getString(R.string.file_not_found))
         }
     }
 
