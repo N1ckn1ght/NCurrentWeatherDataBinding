@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">NCurrentWeatherDataBinding</string>
+
+    <string name="appid">d6843ab8ee963f5d372296dfff62aed7</string>
+
+    <string name="tvecity">Enter city:</string>
+    <string name="btweather">See the weather</string>
+
+    <string name="file_not_found">No such city or your internet connection</string>
+    <string name="temp_not_avail">No temperature data for this city</string>
+</resources>
