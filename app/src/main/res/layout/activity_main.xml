@@ -16,7 +16,7 @@
             android:id="@+id/tvecity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/tvecity"
+            android:text="@{weather.city}"
             android:textSize="24sp"
             app:layout_constraintTop_toTopOf="parent" />
         <EditText
@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:textSize="24sp"
             android:id="@+id/temperature"
-            android:text=""
+            android:text="@{weather.temperature}"
             app:layout_constraintTop_toBottomOf="@+id/city" />
         <Button
             android:layout_width="match_parent"

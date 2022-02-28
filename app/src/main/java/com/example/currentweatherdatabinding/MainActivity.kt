@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        binding.weather = Weather("", "")
+        binding.weather = Weather(getString(R.string.tvecity), "")
         // TODO: show images for the weather, the cloudiness and the wind direction
     }
 
