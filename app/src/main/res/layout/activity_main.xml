@@ -1,37 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable
+            name="weather"
+            type="com.example.currentweatherdatabinding.Weather" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/tvecity"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/tvecity"
-        android:textSize="24sp"
-        app:layout_constraintTop_toTopOf="parent" />
-    <EditText
-        android:id="@+id/city"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="24sp"
-        app:layout_constraintTop_toBottomOf="@+id/tvecity"
-        tools:layout_editor_absoluteX="0dp" />
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="24sp"
-        android:id="@+id/temperature"
-        app:layout_constraintTop_toBottomOf="@+id/city" />
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="24sp"
-        android:text="@string/btweather"
-        android:onClick="onGetClick"
-        app:layout_constraintTop_toBottomOf="@+id/temperature" />
+        <TextView
+            android:id="@+id/tvecity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{weather.city}"
+            android:textSize="24sp"
+            app:layout_constraintTop_toTopOf="parent" />
+        <EditText
+            android:id="@+id/city"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            app:layout_constraintTop_toBottomOf="@+id/tvecity"
+            tools:layout_editor_absoluteX="0dp" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:id="@+id/temperature"
+            android:text="@{weather.temperature}"
+            app:layout_constraintTop_toBottomOf="@+id/city" />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:text="@string/btweather"
+            android:onClick="onGetClick"
+            app:layout_constraintTop_toBottomOf="@+id/temperature" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
