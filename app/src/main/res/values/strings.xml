@@ -8,4 +8,5 @@
 
     <string name="file_not_found">No such city or your internet connection</string>
     <string name="temp_not_avail">No temperature data for this city</string>
+    <string name="wdesk_not_avail">No weather description provided.</string>
 </resources>
