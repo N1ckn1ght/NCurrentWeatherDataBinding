@@ -6,15 +6,11 @@ import android.view.View
 import android.widget.EditText
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
 import com.example.currentweatherdatabinding.databinding.ActivityMainBinding
+import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import org.json.JSONArray
-import org.json.JSONObject
 import java.io.FileNotFoundException
 import java.io.InputStream
 import java.net.URL
@@ -22,7 +18,7 @@ import java.util.*
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
-    var detailsOpened = false
+    private var detailsOpened = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,48 +54,34 @@ class MainActivity : AppCompatActivity() {
         var wdesc: String = getString(R.string.wdesk_not_avail)
 
         try {
-            val stream = URL(weatherURL).getContent() as InputStream
-            val rdata = Scanner(stream).nextLine()
-            val data = JSONObject(rdata).toMap()
+            val stream = URL(weatherURL).content as InputStream
+            val rData = Scanner(stream).nextLine().trimIndent()
+            val weatherData: WeatherJSON = Gson().fromJson(rData, WeatherJSON::class.java)
 
-            if (data.containsKey("main")) {
-                val dataMain = JSONObject(data["main"].toString()).toMap()
-                if (dataMain.containsKey("temp")) {
-                    temp = dataMain["temp"].toString()
-                }
-            }
-            if (data.containsKey("weather")) {
-                var dataWeather = JSONObject(data["weather"].toString()).toMap()
-                dataWeather = JSONObject(dataWeather[0].toString()).toMap()
-                if (dataWeather.containsKey("icon")) {
-                    wicon = "http://openweathermap.org/img/w/" + dataWeather["icon"].toString() + ".png"
-                }
-                if (dataWeather.containsKey("wdesk")) {
-                    wdesc = dataWeather["description"].toString()
-                }
-            }
+            temp = weatherData.main.temp
+            wicon = "http://openweathermap.org/img/w/" + weatherData.weather[0].icon + ".png"
+            wdesc = weatherData.weather[0].description
         } catch (e: FileNotFoundException) {
-            this@MainActivity.runOnUiThread(java.lang.Runnable {
-                Toast.makeText(this, "ERROR 404", Toast.LENGTH_SHORT).show()
-            })
+            this@MainActivity.runOnUiThread {
+                Toast.makeText(this, "ERR: NO DATA FOUND", Toast.LENGTH_SHORT).show()
+            }
             temp = getString(R.string.file_not_found)
         } finally {
             binding.weather = Weather(city, temp, wicon, wdesc)
         }
     }
 
-    // https://stackoverflow.com/questions/44870961/how-to-map-a-json-string-to-kotlin-map
-    private fun JSONObject.toMap(): Map<String, *> = keys().asSequence().associateWith {
-        when (val value = this[it])
-        {
-            is JSONArray ->
-            {
-                val map = (0 until value.length()).associate { Pair(it.toString(), value[it]) }
-                JSONObject(map).toMap().values.toList()
-            }
-            is JSONObject -> value.toMap()
-            JSONObject.NULL -> null
-            else            -> value
-        }
-    }
+    // https://github.com/captaincod/CurrentWeatherDataBinding/blob/main/app/src/main/java/com/example/currentweatherdatabinding/MainActivity.kt
+    data class WeatherJSON(val coord: Coord, val weather: Array<WeatherArray>, val base: String,
+                           val main: WeatherMain, val visibility: Long, val wind: WeatherWind,
+                           val clouds: WeatherClouds, val dt: Long, val sys: WeatherSys,
+                           val timezone: Long, val id: Long, val name: String, val cod: Int)
+    data class Coord(val lon: Double, val lat: Double)
+    data class WeatherArray(val id: Int, val main: String, val description: String, val icon: String)
+    data class WeatherMain(val temp: String, val feels_like: Double,
+                           val temp_min: Double, val temp_max: Double,
+                           val pressure: Int, val humidity: Int)
+    data class WeatherWind(val speed: Int, val deg: Int)
+    data class WeatherClouds(val all: Int)
+    data class WeatherSys(val type: Int, val id: Int, val country: String, val sunrise: Long, val sunset: Long)
 }
