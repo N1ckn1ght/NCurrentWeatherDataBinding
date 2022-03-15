@@ -51,7 +51,16 @@
             android:textSize="24sp"
             android:text="@string/btweather"
             android:onClick="onGetClick"
+            android:id="@+id/btweather"
             app:layout_constraintTop_toBottomOf="@+id/wdetails" />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:text="@string/settings"
+            android:onClick="onSettingsClick"
+            android:id="@+id/btsettings"
+            app:layout_constraintTop_toBottomOf="@+id/btweather" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

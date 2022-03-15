@@ -19,13 +19,15 @@ import java.util.*
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
     private var detailsOpened = false
+    // TODO: toggle it using dialog button https://github.com/ipetrushin/AlertDialogDemo/tree/master/app/src/main/java/com/example/alertdialogdemo
+    private var simplifedFragment = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        binding.weather = Weather(getString(R.string.tvecity), "", null, getString(R.string.wdesk_not_avail))
+        binding.weather = Weather(getString(R.string.tvecity), "", null, getString(R.string.wdesk_not_avail), "")
     }
 
     fun onGetClick(v: View) {
@@ -40,7 +42,11 @@ class MainActivity : AppCompatActivity() {
         if (detailsOpened) {
             supportFragmentManager.popBackStack()
         } else {
-            supportFragmentManager.beginTransaction().add(R.id.wdetails, WeatherFragment()).commit()
+            if (simplifedFragment) {
+                supportFragmentManager.beginTransaction().add(R.id.wdetails, WeatherFragment()).commit()
+            } else {
+                supportFragmentManager.beginTransaction().add(R.id.wdetails, WeatherFragmentSecond()).commit()
+            }
         }
         detailsOpened = !detailsOpened
     }
@@ -52,6 +58,7 @@ class MainActivity : AppCompatActivity() {
         var temp: String = getString(R.string.temp_not_avail)
         var wicon: String? = null
         var wdesc: String = getString(R.string.wdesk_not_avail)
+        var windspeed: String = getString(R.string.windspeed_not_avail)
 
         try {
             val stream = URL(weatherURL).content as InputStream
@@ -61,13 +68,14 @@ class MainActivity : AppCompatActivity() {
             temp = weatherData.main.temp
             wicon = "http://openweathermap.org/img/w/" + weatherData.weather[0].icon + ".png"
             wdesc = weatherData.weather[0].description
+            windspeed = weatherData.wind.speed
         } catch (e: FileNotFoundException) {
             this@MainActivity.runOnUiThread {
                 Toast.makeText(this, "ERR: NO DATA FOUND", Toast.LENGTH_SHORT).show()
             }
             temp = getString(R.string.file_not_found)
         } finally {
-            binding.weather = Weather(city, temp, wicon, wdesc)
+            binding.weather = Weather(city, temp, wicon, wdesc, windspeed)
         }
     }
 
@@ -81,7 +89,7 @@ class MainActivity : AppCompatActivity() {
     data class WeatherMain(val temp: String, val feels_like: Double,
                            val temp_min: Double, val temp_max: Double,
                            val pressure: Int, val humidity: Int)
-    data class WeatherWind(val speed: Int, val deg: Int)
+    data class WeatherWind(val speed: String, val deg: Int)
     data class WeatherClouds(val all: Int)
     data class WeatherSys(val type: Int, val id: Int, val country: String, val sunrise: Long, val sunset: Long)
 }
