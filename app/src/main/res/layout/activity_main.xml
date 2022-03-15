@@ -33,13 +33,25 @@
             android:id="@+id/temperature"
             android:text="@{weather.temperature}"
             app:layout_constraintTop_toBottomOf="@+id/city" />
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onWeatherClick"
+            android:id="@+id/wicon"
+            android:src="@{weather.wicon}"
+            app:layout_constraintTop_toBottomOf="@+id/temperature" />
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/wdetails"
+            app:layout_constraintTop_toBottomOf="@+id/wicon" />
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="24sp"
             android:text="@string/btweather"
             android:onClick="onGetClick"
-            app:layout_constraintTop_toBottomOf="@+id/temperature" />
+            app:layout_constraintTop_toBottomOf="@+id/wdetails" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
