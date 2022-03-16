@@ -11,4 +11,9 @@
     <string name="temp_not_avail">No temperature data for this city</string>
     <string name="wdesc_not_avail">No weather description provided.</string>
     <string name="windspeed_not_avail">No wind speed data provided.</string>
+
+    <string-array name="fragment_types">
+        <item>Yellow</item>
+        <item>Blue</item>
+    </string-array>
 </resources>

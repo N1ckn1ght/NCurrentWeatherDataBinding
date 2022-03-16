@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import com.example.alertdialogdemo.SettingsDialog
 import com.example.currentweatherdatabinding.databinding.ActivityMainBinding
 import com.google.gson.Gson
 import com.squareup.picasso.Picasso
@@ -22,8 +23,7 @@ import java.util.*
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
     private var detailsOpened = false
-    // TODO: toggle it using dialog button https://github.com/ipetrushin/AlertDialogDemo/tree/master/app/src/main/java/com/example/alertdialogdemo
-    private var secondFragment = false
+    var secondFragment = false
 
     var wdesc: String = getString(R.string.wdesc_not_avail)
     var windspeed: String = getString(R.string.windspeed_not_avail)
@@ -42,6 +42,10 @@ class MainActivity : AppCompatActivity() {
         GlobalScope.launch (Dispatchers.IO) {
             loadWeather(city.text.toString())
         }
+    }
+
+    fun onSettingsClick(v: View) {
+        SettingsDialog(this).show(supportFragmentManager, "test")
     }
 
     fun onWeatherClick(v: View) {
