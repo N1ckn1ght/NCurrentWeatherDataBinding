@@ -8,7 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import com.example.alertdialogdemo.SettingsDialog
+import com.example.currentweatherdatabinding.SettingsDialog
 import com.example.currentweatherdatabinding.databinding.ActivityMainBinding
 import com.google.gson.Gson
 import com.squareup.picasso.Picasso
