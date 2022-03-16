@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 
-class WeatherFragment(val wdesc: String, val windspeed: String) : Fragment() {
+class WeatherFragment(private val wdesc: String, private val windspeed: String) : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

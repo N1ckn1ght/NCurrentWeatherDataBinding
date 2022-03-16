@@ -5,14 +5,14 @@ import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
-import com.example.currentweatherdatabinding.R
 
-class SettingsDialog(val ctx: Context): DialogFragment() {
+class SettingsDialog(private val ctx: Context): DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         var choice = 0
         return ctx.let { AlertDialog.Builder(it).
         setSingleChoiceItems(ctx.resources.getStringArray(R.array.fragment_types),
-            (ctx as MainActivity).secondFragment.toInt(), {dialog, which -> choice = which}).
+            (ctx as MainActivity).secondFragment.toInt()
+        ) { _, which -> choice = which }.
         setPositiveButton("Ok", MyListener(ctx)).
         create()
         }
@@ -20,9 +20,5 @@ class SettingsDialog(val ctx: Context): DialogFragment() {
 }
 
 private fun Boolean.toInt(): Int {
-    if (this == true) {
-        return 1
-    } else {
-        return 0
-    }
+    return if (this) { 1 } else { 0 }
 }

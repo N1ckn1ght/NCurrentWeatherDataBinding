@@ -19,12 +19,12 @@ import java.net.URL
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
-    lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityMainBinding
     private var detailsOpened = false
     var secondFragment = false
 
-    lateinit var wdesc: String
-    lateinit var windspeed: String
+    private lateinit var wdesc: String
+    private lateinit var windspeed: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,7 +84,7 @@ class MainActivity : AppCompatActivity() {
             }
             temp = getString(R.string.file_not_found)
         } finally {
-            binding.weather = Weather("City: ${city}", temp, wdesc, windspeed)
+            binding.weather = Weather("City: $city", temp, wdesc, windspeed)
 
             // temporary solution ((as always it becomes permanent))
             this@MainActivity.runOnUiThread {
