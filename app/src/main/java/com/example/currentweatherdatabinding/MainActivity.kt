@@ -69,7 +69,7 @@ class MainActivity : AppCompatActivity() {
 
             temp = weatherData.main.temp
             wdesc = weatherData.weather[0].description
-            wicon = weatherData.weather[0].icon
+            wicon ="http://openweathermap.org/img/w/" + weatherData.weather[0].icon + ".png"
             windspeed = weatherData.wind.speed
         } catch (e: FileNotFoundException) {
             this@MainActivity.runOnUiThread {
