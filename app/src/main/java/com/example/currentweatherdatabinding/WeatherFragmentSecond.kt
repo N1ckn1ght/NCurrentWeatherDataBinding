@@ -8,14 +8,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 
 class WeatherFragmentSecond : Fragment() {
-    // TODO: make it with windspeed layout
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_weather, container, false)
-        view.setBackgroundColor(Color.YELLOW)
+        view.setBackgroundColor(Color.BLUE)
         return view
     }
 }

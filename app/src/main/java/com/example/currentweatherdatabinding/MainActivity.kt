@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.example.currentweatherdatabinding.databinding.ActivityMainBinding
@@ -22,14 +23,17 @@ class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
     private var detailsOpened = false
     // TODO: toggle it using dialog button https://github.com/ipetrushin/AlertDialogDemo/tree/master/app/src/main/java/com/example/alertdialogdemo
-    private var simplifedFragment = false
+    private var secondFragment = false
+
+    var wdesc: String = getString(R.string.wdesc_not_avail)
+    var windspeed: String = getString(R.string.windspeed_not_avail)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        binding.weather = Weather(getString(R.string.tvecity), "", getString(R.string.wdesk_not_avail), "")
+        binding.weather = Weather(getString(R.string.tvecity), "", getString(R.string.wdesc_not_avail), "")
     }
 
     fun onGetClick(v: View) {
@@ -44,11 +48,16 @@ class MainActivity : AppCompatActivity() {
         if (detailsOpened) {
             supportFragmentManager.popBackStack()
         } else {
-            if (simplifedFragment) {
-                supportFragmentManager.beginTransaction().add(R.id.wdetails, WeatherFragment()).commit()
-            } else {
+            if (secondFragment) {
                 supportFragmentManager.beginTransaction().add(R.id.wdetails, WeatherFragmentSecond()).commit()
+            } else {
+                supportFragmentManager.beginTransaction().add(R.id.wdetails, WeatherFragment()).commit()
             }
+
+            val tvdesc = findViewById<TextView>(R.id.wdesc)
+            val tvwindspeed = findViewById<TextView>(R.id.windspeed)
+            tvdesc.text = wdesc
+            tvwindspeed.text = windspeed
         }
         detailsOpened = !detailsOpened
     }
@@ -58,9 +67,7 @@ class MainActivity : AppCompatActivity() {
         val weatherURL = "https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric"
 
         var temp: String = getString(R.string.temp_not_avail)
-        var wdesc: String = getString(R.string.wdesk_not_avail)
         var wicon: String? = null
-        var windspeed: String = getString(R.string.windspeed_not_avail)
 
         try {
             val stream = URL(weatherURL).content as InputStream

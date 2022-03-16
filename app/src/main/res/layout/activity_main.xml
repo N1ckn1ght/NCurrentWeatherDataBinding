@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <variable
             name="weather"
             type="com.example.currentweatherdatabinding.Weather" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".MainActivity">
@@ -34,11 +34,14 @@
             android:text="@{weather.temperature}"
             app:layout_constraintTop_toBottomOf="@+id/city" />
         <ImageView
+            android:id="@+id/wicon"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="onWeatherClick"
-            android:id="@+id/wicon"
-            app:layout_constraintTop_toBottomOf="@+id/temperature" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/temperature"
+            app:layout_constraintDimensionRatio="W,1:1"
+            app:layout_constraintHeight_percent="0.25" />
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
