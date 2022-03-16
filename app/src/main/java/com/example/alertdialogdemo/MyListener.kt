@@ -1,4 +1,4 @@
-package com.example.alertdialogdemo
+package com.example.currentweatherdatabinding
 
 import android.content.Context
 import android.content.DialogInterface
