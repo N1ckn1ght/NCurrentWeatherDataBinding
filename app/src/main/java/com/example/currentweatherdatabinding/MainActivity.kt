@@ -77,14 +77,16 @@ class MainActivity : AppCompatActivity() {
             }
             temp = getString(R.string.file_not_found)
         } finally {
-            binding.weather = Weather(city, temp, wdesc, windspeed)
+            binding.weather = Weather("City: ${city}", temp, wdesc, windspeed)
 
             // temporary solution ((as always it becomes permanent))
-            val ivIcon = findViewById<ImageView>(R.id.wicon)
-            if (wicon != null) {
-                Picasso.with(this).load(wicon).into(ivIcon)
-            } else {
-                ivIcon.setImageResource(0)
+            this@MainActivity.runOnUiThread {
+                val ivIcon = findViewById<ImageView>(R.id.wicon)
+                if (wicon != null) {
+                    Picasso.with(this).load(wicon).into(ivIcon)
+                } else {
+                    ivIcon.setImageResource(0)
+                }
             }
         }
     }
