@@ -25,12 +25,15 @@ class MainActivity : AppCompatActivity() {
     private var detailsOpened = false
     var secondFragment = false
 
-    var wdesc: String = getString(R.string.wdesc_not_avail)
-    var windspeed: String = getString(R.string.windspeed_not_avail)
+    lateinit var wdesc: String
+    lateinit var windspeed: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        wdesc = getString(R.string.wdesc_not_avail)
+        windspeed = getString(R.string.windspeed_not_avail)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.weather = Weather(getString(R.string.tvecity), "", getString(R.string.wdesc_not_avail), "")
