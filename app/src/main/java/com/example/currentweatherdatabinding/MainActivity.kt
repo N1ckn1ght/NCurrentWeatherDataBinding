@@ -4,10 +4,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.example.currentweatherdatabinding.databinding.ActivityMainBinding
 import com.google.gson.Gson
+import com.squareup.picasso.Picasso
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -27,7 +29,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        binding.weather = Weather(getString(R.string.tvecity), "", null, getString(R.string.wdesk_not_avail), "")
+        binding.weather = Weather(getString(R.string.tvecity), "", getString(R.string.wdesk_not_avail), "")
     }
 
     fun onGetClick(v: View) {
@@ -56,8 +58,8 @@ class MainActivity : AppCompatActivity() {
         val weatherURL = "https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric"
 
         var temp: String = getString(R.string.temp_not_avail)
-        var wicon: String? = null
         var wdesc: String = getString(R.string.wdesk_not_avail)
+        var wicon: String? = null
         var windspeed: String = getString(R.string.windspeed_not_avail)
 
         try {
@@ -66,8 +68,8 @@ class MainActivity : AppCompatActivity() {
             val weatherData: WeatherJSON = Gson().fromJson(rData, WeatherJSON::class.java)
 
             temp = weatherData.main.temp
-            wicon = "http://openweathermap.org/img/w/" + weatherData.weather[0].icon + ".png"
             wdesc = weatherData.weather[0].description
+            wicon = weatherData.weather[0].icon
             windspeed = weatherData.wind.speed
         } catch (e: FileNotFoundException) {
             this@MainActivity.runOnUiThread {
@@ -75,7 +77,15 @@ class MainActivity : AppCompatActivity() {
             }
             temp = getString(R.string.file_not_found)
         } finally {
-            binding.weather = Weather(city, temp, wicon, wdesc, windspeed)
+            binding.weather = Weather(city, temp, wdesc, windspeed)
+
+            // temporary solution ((as always it becomes permanent))
+            val ivIcon = findViewById<ImageView>(R.id.wicon)
+            if (wicon != null) {
+                Picasso.with(this).load(wicon).into(ivIcon)
+            } else {
+                ivIcon.setImageResource(0)
+            }
         }
     }
 
