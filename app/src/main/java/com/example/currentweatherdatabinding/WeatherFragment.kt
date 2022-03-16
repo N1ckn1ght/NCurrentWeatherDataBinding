@@ -10,12 +10,14 @@ import androidx.fragment.app.Fragment
 import com.example.currentweatherdatabinding.databinding.FragmentWeatherBinding
 
 class WeatherFragment : Fragment() {
+    lateinit var binding: FragmentWeatherBinding
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding: FragmentWeatherBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_weather, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_weather, container, false)
         val view = binding.root
         view.setBackgroundColor(Color.YELLOW)
         return view
