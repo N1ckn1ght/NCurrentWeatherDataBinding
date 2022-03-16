@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:text=""
             android:textSize="24sp"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@id/wdesc" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

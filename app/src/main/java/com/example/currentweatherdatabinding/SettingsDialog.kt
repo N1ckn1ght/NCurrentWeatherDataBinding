@@ -20,7 +20,7 @@ class SettingsDialog(val ctx: Context): DialogFragment() {
 }
 
 private fun Boolean.toInt(): Int {
-    if (this) {
+    if (this == true) {
         return 1
     } else {
         return 0

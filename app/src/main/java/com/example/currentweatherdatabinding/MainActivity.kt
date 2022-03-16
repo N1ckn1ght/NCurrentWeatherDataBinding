@@ -91,6 +91,8 @@ class MainActivity : AppCompatActivity() {
                 val ivIcon = findViewById<ImageView>(R.id.wicon)
                 if (wicon != null) {
                     Picasso.with(this).load(wicon).into(ivIcon)
+                    ivIcon.layoutParams.width = 200
+                    ivIcon.layoutParams.height = 200
                 } else {
                     ivIcon.setImageResource(0)
                 }
