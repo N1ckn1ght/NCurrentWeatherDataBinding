@@ -5,10 +5,8 @@ import android.os.Bundle
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import com.example.currentweatherdatabinding.SettingsDialog
 import com.example.currentweatherdatabinding.databinding.ActivityMainBinding
 import com.google.gson.Gson
 import com.squareup.picasso.Picasso
@@ -56,15 +54,10 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.popBackStack()
         } else {
             if (secondFragment) {
-                supportFragmentManager.beginTransaction().add(R.id.wdetails, WeatherFragmentSecond()).commit()
+                supportFragmentManager.beginTransaction().add(R.id.wdetails, WeatherFragmentSecond(wdesc, windspeed)).commit()
             } else {
-                supportFragmentManager.beginTransaction().add(R.id.wdetails, WeatherFragment()).commit()
+                supportFragmentManager.beginTransaction().add(R.id.wdetails, WeatherFragment(wdesc, windspeed)).commit()
             }
-
-            val tvdesc = findViewById<TextView>(R.id.wdesc)
-            val tvwindspeed = findViewById<TextView>(R.id.windspeed)
-            tvdesc.text = wdesc
-            tvwindspeed.text = windspeed
         }
         detailsOpened = !detailsOpened
     }
