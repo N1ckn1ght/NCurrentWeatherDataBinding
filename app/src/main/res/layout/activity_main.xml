@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:onClick="onWeatherClick"
             android:id="@+id/wicon"
-            android:src="@{weather.wicon}"
+            app:imageResource="@{weather.wicon}"
             app:layout_constraintTop_toBottomOf="@+id/temperature" />
         <FrameLayout
             android:layout_width="match_parent"
