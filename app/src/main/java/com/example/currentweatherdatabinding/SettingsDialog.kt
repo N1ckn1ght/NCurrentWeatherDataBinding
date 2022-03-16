@@ -12,9 +12,17 @@ class SettingsDialog(val ctx: Context): DialogFragment() {
         var choice = 0
         return ctx.let { AlertDialog.Builder(it).
         setSingleChoiceItems(ctx.resources.getStringArray(R.array.fragment_types),
-            0, {dialog, which -> choice = which}).
+            (ctx as MainActivity).secondFragment.toInt(), {dialog, which -> choice = which}).
         setPositiveButton("Ok", MyListener(ctx)).
         create()
         }
+    }
+}
+
+private fun Boolean.toInt(): Int {
+    if (this) {
+        return 1
+    } else {
+        return 0
     }
 }
