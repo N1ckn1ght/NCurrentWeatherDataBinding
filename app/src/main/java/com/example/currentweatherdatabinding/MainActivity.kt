@@ -28,6 +28,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var wdesc: String
     private lateinit var windspeed: String
 
+    private lateinit var layout: FrameLayout
+    private lateinit var ivIcon: ImageView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -37,6 +40,9 @@ class MainActivity : AppCompatActivity() {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.weather = Weather(getString(R.string.tvecity), "", getString(R.string.wdesc_not_avail), "")
+
+        layout = findViewById(R.id.wdetails)
+        ivIcon = findViewById(R.id.wicon)
     }
 
     fun onGetClick(v: View) {
@@ -55,7 +61,6 @@ class MainActivity : AppCompatActivity() {
         if (detailsOpened) {
             // supportFragmentManager.popBackStack()
             // temporary solution 2 - from creators of "temporary solution"
-            val layout = findViewById<FrameLayout>(R.id.wdetails)
             layout.removeAllViewsInLayout()
         } else {
             if (secondFragment) {
@@ -91,15 +96,17 @@ class MainActivity : AppCompatActivity() {
         } finally {
             binding.weather = Weather("City: $city", temp, wdesc, windspeed)
 
-            // temporary solution ((as always it becomes permanent))
+            // temporary solution (as always it becomes permanent)
             this@MainActivity.runOnUiThread {
-                val ivIcon = findViewById<ImageView>(R.id.wicon)
                 if (wicon != null) {
                     Picasso.with(this).load(wicon).into(ivIcon)
                     ivIcon.layoutParams.width = 200
                     ivIcon.layoutParams.height = 200
                 } else {
+                    layout.removeAllViewsInLayout()
                     ivIcon.setImageResource(0)
+                    ivIcon.layoutParams.width = 0
+                    ivIcon.layoutParams.height = 0
                 }
             }
         }
