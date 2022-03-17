@@ -2,12 +2,16 @@ package com.example.currentweatherdatabinding
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.EditText
+import android.widget.FrameLayout
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.example.currentweatherdatabinding.databinding.ActivityMainBinding
 import com.google.gson.Gson
+import com.squareup.picasso.Picasso
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -17,15 +21,28 @@ import java.net.URL
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
-    lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityMainBinding
     private var detailsOpened = false
+    var secondFragment = false
+
+    private lateinit var wdesc: String
+    private lateinit var windspeed: String
+
+    private lateinit var layout: FrameLayout
+    private lateinit var ivIcon: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        wdesc = getString(R.string.wdesc_not_avail)
+        windspeed = getString(R.string.windspeed_not_avail)
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        binding.weather = Weather(getString(R.string.tvecity), "", null, getString(R.string.wdesk_not_avail))
+        binding.weather = Weather(getString(R.string.tvecity), "", getString(R.string.wdesc_not_avail), "")
+
+        layout = findViewById(R.id.wdetails)
+        ivIcon = findViewById(R.id.wicon)
     }
 
     fun onGetClick(v: View) {
@@ -36,11 +53,21 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    fun onSettingsClick(v: View) {
+        SettingsDialog(this).show(supportFragmentManager, "test")
+    }
+
     fun onWeatherClick(v: View) {
         if (detailsOpened) {
-            supportFragmentManager.popBackStack()
+            // supportFragmentManager.popBackStack()
+            // temporary solution 2 - from creators of "temporary solution"
+            layout.removeAllViewsInLayout()
         } else {
-            supportFragmentManager.beginTransaction().add(R.id.wdetails, WeatherFragment()).commit()
+            if (secondFragment) {
+                supportFragmentManager.beginTransaction().add(R.id.wdetails, WeatherFragmentSecond(wdesc, windspeed)).commit()
+            } else {
+                supportFragmentManager.beginTransaction().add(R.id.wdetails, WeatherFragment(wdesc, windspeed)).commit()
+            }
         }
         detailsOpened = !detailsOpened
     }
@@ -51,7 +78,6 @@ class MainActivity : AppCompatActivity() {
 
         var temp: String = getString(R.string.temp_not_avail)
         var wicon: String? = null
-        var wdesc: String = getString(R.string.wdesk_not_avail)
 
         try {
             val stream = URL(weatherURL).content as InputStream
@@ -59,15 +85,30 @@ class MainActivity : AppCompatActivity() {
             val weatherData: WeatherJSON = Gson().fromJson(rData, WeatherJSON::class.java)
 
             temp = weatherData.main.temp
-            wicon = "http://openweathermap.org/img/w/" + weatherData.weather[0].icon + ".png"
             wdesc = weatherData.weather[0].description
+            wicon ="http://openweathermap.org/img/w/" + weatherData.weather[0].icon + ".png"
+            windspeed = weatherData.wind.speed
         } catch (e: FileNotFoundException) {
             this@MainActivity.runOnUiThread {
                 Toast.makeText(this, "ERR: NO DATA FOUND", Toast.LENGTH_SHORT).show()
             }
             temp = getString(R.string.file_not_found)
         } finally {
-            binding.weather = Weather(city, temp, wicon, wdesc)
+            binding.weather = Weather("City: $city", temp, wdesc, windspeed)
+
+            // temporary solution (as always it becomes permanent)
+            this@MainActivity.runOnUiThread {
+                if (wicon != null) {
+                    Picasso.with(this).load(wicon).into(ivIcon)
+                    ivIcon.layoutParams.width = 200
+                    ivIcon.layoutParams.height = 200
+                } else {
+                    layout.removeAllViewsInLayout()
+                    ivIcon.setImageResource(0)
+                    ivIcon.layoutParams.width = 0
+                    ivIcon.layoutParams.height = 0
+                }
+            }
         }
     }
 
@@ -76,12 +117,15 @@ class MainActivity : AppCompatActivity() {
                            val main: WeatherMain, val visibility: Long, val wind: WeatherWind,
                            val clouds: WeatherClouds, val dt: Long, val sys: WeatherSys,
                            val timezone: Long, val id: Long, val name: String, val cod: Int)
+
     data class Coord(val lon: Double, val lat: Double)
     data class WeatherArray(val id: Int, val main: String, val description: String, val icon: String)
     data class WeatherMain(val temp: String, val feels_like: Double,
                            val temp_min: Double, val temp_max: Double,
-                           val pressure: Int, val humidity: Int)
-    data class WeatherWind(val speed: Int, val deg: Int)
+                           val pressure: Int, val humidity: Int,
+                           val gust: Double = 0.0, val sea_level: Int = 0, val grnd_level:Int = 0)
+    data class WeatherWind(val speed: String, val deg: Int,
+                           val gust: Double = 0.0)
     data class WeatherClouds(val all: Int)
     data class WeatherSys(val type: Int, val id: Int, val country: String, val sunrise: Long, val sunset: Long)
 }
