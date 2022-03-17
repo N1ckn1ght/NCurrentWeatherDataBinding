@@ -1,4 +1,4 @@
-package com.example.currentweatherdatabinding
+package com.example.ncurrentweatherdatabinding
 
 data class Weather(var City: String,
                    var temperature: String,

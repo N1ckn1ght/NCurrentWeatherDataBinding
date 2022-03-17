@@ -1,4 +1,4 @@
-package com.example.currentweatherdatabinding
+package com.example.ncurrentweatherdatabinding
 
 import android.content.Context
 import android.content.DialogInterface

@@ -5,7 +5,7 @@
     <data>
         <variable
             name="weather"
-            type="com.example.currentweatherdatabinding.Weather" />
+            type="com.example.ncurrentweatherdatabinding.Weather" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

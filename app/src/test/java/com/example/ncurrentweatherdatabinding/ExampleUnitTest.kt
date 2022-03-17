@@ -1,4 +1,4 @@
-package com.example.currentweatherdatabinding
+package com.example.ncurrentweatherdatabinding
 
 import org.junit.Test
 

@@ -1,15 +1,14 @@
-package com.example.currentweatherdatabinding
+package com.example.ncurrentweatherdatabinding
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import com.example.currentweatherdatabinding.databinding.ActivityMainBinding
+import com.example.ncurrentweatherdatabinding.databinding.ActivityMainBinding
 import com.google.gson.Gson
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.Dispatchers
